@@ -601,8 +601,8 @@ struct FRU_DATA * parse_FRU (unsigned char *data)
 
 	/* Parse Chassis Info Area */
 	if (data[2]) {
-		printf_err("Chassis Info Area not yet implmented - sorry\n");
-		goto err;
+		printf_warn("Chassis Info Area not yet implmented - sorry\n");
+		//goto err;
 	}
 
 	/* Parse Board Area */
@@ -612,10 +612,10 @@ struct FRU_DATA * parse_FRU (unsigned char *data)
 			goto err;
 	}
 
-	/* Parse Chassis Info Area */
+	/* Parse Product Info Area */
 	if (data[4]) {
-		printf_err("Chassis Info Area parsing not yet implemented - sorry\n");
-		goto err;
+		printf_warn("Product Info Area parsing not yet implemented - sorry\n");
+		//goto err;
 	}
 
 	/* Parse MultiRecord Area */
@@ -643,12 +643,14 @@ void free_FRU(struct FRU_DATA *fru)
 		free(fru->Board_Area->custom[j]);
 	free(fru->Board_Area);
 
-	for(j = 0; j < NUM_SUPPLIES; j++)
-		free(fru->MultiRecord_Area->supplies[j]);
-	free(fru->MultiRecord_Area->i2c_devices);
+	if (fru->MultiRecord_Area) {
+		for(j = 0; j < NUM_SUPPLIES; j++)
+			free(fru->MultiRecord_Area->supplies[j]);
+		free(fru->MultiRecord_Area->i2c_devices);
 
-	free(fru->MultiRecord_Area->connector);
-	free(fru->MultiRecord_Area);
+		free(fru->MultiRecord_Area->connector);
+		free(fru->MultiRecord_Area);
+	}
 
 	free(fru);
 

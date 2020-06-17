@@ -64,7 +64,7 @@ void printf_err (const char * fmt, ...)
 	printf("fru_dump %s, built %s\n", VERSION, VERSION_DATE);
 	vfprintf(stderr,fmt,ap);
 	va_end(ap);
-	exit(EXIT_FAILURE);
+	//exit(EXIT_FAILURE);
 }
 
 void printf_warn (const char * fmt, ...)
